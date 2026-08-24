@@ -51,15 +51,15 @@ A production-grade Security Operations Center (SOC) and Detection Engineering ho
 
 ### 1. Executive SOC Overview Dashboard
 Real-time breakdown of critical alerts, top targeted endpoints, and high-risk activity feeds.
-![SOC Overview](docs/dashboards/soc_overview.png)
+![SOC Overview](./docs/dashboards/soc_overview.png)
 
 ### 2. Authentication & Access Security Dashboard
 Tracking authentication anomalies, RDP brute force bursts, and compromise correlation.
-![Authentication Dashboard](docs/dashboards/authentication_dashboard.png)
+![Authentication Dashboard](./docs/dashboards/auth_identity.png)
 
 ### 3. Endpoint Process & Telemetry Monitoring
 Sysmon process tree visualization, execution anomaly monitoring, and LOLBin tracking.
-![Endpoint Telemetry](docs/dashboards/endpoint_telemetry.png)
+![Endpoint Telemetry](./docs/dashboards/endpoint_process.png)
 
 ---
 
