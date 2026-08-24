@@ -1,0 +1,11 @@
+# Detection: Windows Logon / RDP Brute Force Attempt
+# MITRE ATT&CK: T1110.001 - Credential Access: Password Guessing
+# Telemetry: Windows Security Event Log (EventCode 4625)
+# Threshold: 20+ failed attempts within 3 minutes (180 seconds)
+
+index=main LogName=Security EventCode=4625 
+| eval Account_Name=mvindex(Account_Name,1) 
+| stats count, earliest(_time) as first_attempt, latest(_time) as last_attempt by Account_Name, Source_Network_Address 
+| eval duration_sec = last_attempt - first_attempt 
+| where count >= 20 AND duration_sec <= 180 
+| convert ctime(first_attempt) ctime(last_attempt)
