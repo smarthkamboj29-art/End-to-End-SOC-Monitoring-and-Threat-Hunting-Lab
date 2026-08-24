@@ -1,0 +1,8 @@
+# Detection: Obfuscated & Suspicious PowerShell Execution
+# MITRE ATT&CK: T1059.001 - Command and Scripting Interpreter: PowerShell
+# Telemetry: Microsoft Sysmon Operational Log (EventCode 1 - Process Creation)
+# Logic: Flags encoded, hidden window, or remote download cradle arguments
+
+index=main EventCode=1 Image="*powershell.exe*"
+| regex CommandLine="(?i)(-enc|-encodedcommand|-nop|-w\s+hidden|-windowstyle\s+hidden|iex|downloadstring|bypass)"
+| table _time host User CommandLine ParentImage
