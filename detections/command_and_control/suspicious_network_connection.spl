@@ -1,0 +1,9 @@
+# Detection: Suspicious Outbound Network Connection via LOLBins/Interpreters
+# MITRE ATT&CK: T1071 - Application Layer Protocol, T1105 - Ingress Tool Transfer
+# Telemetry: Microsoft Sysmon Operational Log (EventCode 3 - Network Connection)
+# Logic: Monitors high-risk binaries (PowerShell, CMD, CertUtil, Rundll32, MSHTA) establishing external connections
+
+index=main EventCode=3
+| eval Process = lower(Image)
+| search Process="*\\powershell.exe" OR Process="*\\cmd.exe" OR Process="*\\certutil.exe" OR Process="*\\rundll32.exe" OR Process="*\\mshta.exe"
+| table _time host User Image DestinationIp DestinationPort DestinationHostname
