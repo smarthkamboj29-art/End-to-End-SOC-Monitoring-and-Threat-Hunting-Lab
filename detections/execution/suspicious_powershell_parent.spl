@@ -1,0 +1,9 @@
+# Detection: Suspicious Parent-Child Process Hierarchy Spawning PowerShell
+# MITRE ATT&CK: T1059.001 - Command and Scripting Interpreter: PowerShell, T1566 - Phishing
+# Telemetry: Microsoft Sysmon Operational Log (EventCode 1 - Process Creation)
+# Logic: Detects PowerShell spawned by unusual parent processes such as MS Office, Scripting Hosts, WMI, or MSHTA
+
+index=main EventCode=1 Image="*\\powershell.exe"
+| eval Parent = lower(ParentImage)
+| search Parent="*\\winword.exe" OR Parent="*\\excel.exe" OR Parent="*\\powerpnt.exe" OR Parent="*\\wscript.exe" OR Parent="*\\cscript.exe" OR Parent="*\\wmiprvse.exe" OR Parent="*\\mshta.exe" OR Parent="*\\cmd.exe"
+| table _time host User ParentImage Image CommandLine
