@@ -1,0 +1,9 @@
+# Detection: Suspicious Service Installation Detection
+# MITRE ATT&CK: T1543.003 - Create or Modify System Process: Windows Service
+# Telemetry: Windows System Event Log (EventCode 7045 - A service was installed in the system)
+# Filtering: Excludes trusted DriverStore binaries and SYSTEM account noise
+
+index=main LogName=System EventCode=7045
+NOT (Service_File_Name="*\\Windows\\System32\\DriverStore*" OR ServiceFileName="*\\Windows\\System32\\DriverStore*")
+NOT (Account_Name="SYSTEM" OR AccountName="SYSTEM")
+| table _time, host, Service_Name, ServiceName, Service_File_Name, ServiceFileName, Account_Name, AccountName
