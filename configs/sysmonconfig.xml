@@ -1,1 +1,36 @@
+<Sysmon schemaversion="4.90">
+  <HashAlgorithms>md5,sha256</HashAlgorithms>
+  <CheckRevocation/>
+  <EventFiltering>
+    
+    <!-- Event ID 1: Process Creation -->
+    <RuleGroup name="ProcessCreation" groupRelation="or">
+      <ProcessCreate onmatch="include">
+        <!-- Log Suspicious Execution Tools -->
+        <Image condition="image">powershell.exe</Image>
+        <Image condition="image">cmd.exe</Image>
+        <Image condition="image">wmic.exe</Image>
+        <Image condition="image">schtasks.exe</Image>
+        <Image condition="image">sc.exe</Image>
+        <Image condition="image">net.exe</Image>
+        <Image condition="image">whoami.exe</Image>
+      </ProcessCreate>
+    </RuleGroup>
 
+    <!-- Event ID 3: Network Connection -->
+    <RuleGroup name="NetworkConnections" groupRelation="or">
+      <NetworkConnect onmatch="include">
+        <Image condition="image">powershell.exe</Image>
+        <Image condition="image">cmd.exe</Image>
+      </NetworkConnect>
+    </RuleGroup>
+
+    <!-- Event ID 22: DNS Query Logging -->
+    <RuleGroup name="DNSQueries" groupRelation="or">
+      <DnsQuery onmatch="exclude">
+        <!-- Exclude noisy local broadcast/multicast queries if needed -->
+      </DnsQuery>
+    </RuleGroup>
+
+  </EventFiltering>
+</Sysmon>
