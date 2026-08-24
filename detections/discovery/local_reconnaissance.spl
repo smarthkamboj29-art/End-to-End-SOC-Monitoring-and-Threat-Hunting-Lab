@@ -1,0 +1,11 @@
+# Detection: Host & Domain Reconnaissance Activity Threshold
+# MITRE ATT&CK: T1087.001 (Account Discovery), T1082 (System Information Discovery), T1018 (Remote System Discovery)
+# Telemetry: Microsoft Sysmon Operational Log (EventCode 1 - Process Creation)
+# Logic: Aggregates recon commands by parent process and triggers when 3 or more recon utilities run
+
+index=main EventCode=1
+| eval Process = lower(Image)
+| eval Parent_Process = lower(ParentImage)
+| search Process="*\\whoami.exe" OR Process="*\\net.exe" OR Process="*\\net1.exe" OR Process="*\\quser.exe" OR Process="*\\nltest.exe"
+| stats count, values(CommandLine) as Executed_Commands by host, User, Parent_Process
+| where count >= 3
