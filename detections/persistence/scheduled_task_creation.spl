@@ -1,0 +1,9 @@
+# Detection: Unauthorized Scheduled Task Creation / Update (Persistence)
+# MITRE ATT&CK: T1053.005 - Scheduled Task/Job: Scheduled Task
+# Telemetry: Windows Security Event Log (EventCode 4698: Task Created, EventCode 4702: Task Updated)
+# Filtering: Excludes SYSTEM and Computer Account machine noise ($)
+
+index=main LogName=Security (EventCode=4698 OR EventCode=4702) 
+NOT (Account_Name="SYSTEM" OR AccountName="SYSTEM") 
+NOT (Account_Name="*$" OR AccountName="*$") 
+| table _time, host, Account_Name, AccountName, Task_Name, TaskName, EventCode
