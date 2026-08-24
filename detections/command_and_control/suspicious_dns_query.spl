@@ -1,0 +1,8 @@
+# Detection: Suspicious DNS Query Detection
+# MITRE ATT&CK: T1071.004 - Application Layer Protocol: DNS
+# Telemetry: Microsoft Sysmon Operational Log (EventCode 22 - DNSEvent / DNS Query)
+# Logic: Identifies lookups for known suspicious keywords, raw code repositories, and high-risk TLDs (.xyz, .top)
+
+index=main EventCode=22 QueryName=*
+| search QueryName="*evil*" OR QueryName="*pastebin*" OR QueryName="*.xyz" OR QueryName="*.top" OR QueryName="*c2*"
+| table _time host Image QueryName QueryStatus
