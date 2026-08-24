@@ -1,0 +1,17 @@
+# Detection: Potential Account Compromise - Brute Force Followed by Success
+# MITRE ATT&CK: T1110 (Brute Force), T1078 (Valid Accounts)
+# Telemetry: Windows Security Event Log (EventCode 4625 & EventCode 4624)
+# Logic: Flags 10+ failed logins followed by a successful login (Logon Types: Interactive, Network, RemoteInteractive/RDP) where success occurs after failures
+
+index=main LogName=Security (EventCode=4625 OR (EventCode=4624 Logon_Type IN (2,3,10)))
+| eval Raw_User = if(isnotnull(mvindex(Account_Name,1)), mvindex(Account_Name,1), mvindex(Account_Name,0))
+| eval User = lower(Raw_User)
+| eval Source_IP = if(Source_Network_Address="-" OR isnull(Source_Network_Address), "Local/Unknown", Source_Network_Address)
+| stats 
+    count(eval(EventCode=4625)) as Failed_Logins,
+    count(eval(EventCode=4624)) as Successful_Logins,
+    earliest(eval(if(EventCode=4625, _time, null()))) as First_Failed_Time,
+    latest(eval(if(EventCode=4624, _time, null()))) as Last_Success_Time
+    by User, Source_IP
+| where Failed_Logins >= 10 AND Successful_Logins >= 1 AND Last_Success_Time > First_Failed_Time
+| convert ctime(First_Failed_Time) ctime(Last_Success_Time)
