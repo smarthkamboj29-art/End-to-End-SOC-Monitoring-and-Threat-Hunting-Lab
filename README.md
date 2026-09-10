@@ -33,6 +33,9 @@ A production-grade Security Operations Center (SOC) and Detection Engineering ho
 
 
 ***MITRE ATT&CK Detection Matrix (9 Rules)***
+
+![MITRE ATT&CK Heatmap]()
+
 | MITRE Tactic | MITRE ID | Detection Rule Name | Telemetry Source | Detection File |
 | :--- | :--- | :--- | :--- | :--- |
 | **Credential Access** | `T1110.001` | Windows Brute Force Detection | Windows Security (`4625`) | [`brute_force_detection.spl`](detections/authentication/brute_force_detection.spl) |
