@@ -34,7 +34,7 @@ A production-grade Security Operations Center (SOC) and Detection Engineering ho
 
 ***MITRE ATT&CK Detection Matrix (9 Rules)***
 
-![MITRE ATT&CK Heatmap](Screenshot2026-09-10080649.png)
+![MITRE ATT&CK Heatmap](mitre_heatmap.png)
 
 | MITRE Tactic | MITRE ID | Detection Rule Name | Telemetry Source | Detection File |
 | :--- | :--- | :--- | :--- | :--- |
